@@ -1,0 +1,356 @@
+@import url("clases.css");
+
+/*RESET*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd,
+fieldset, form, label, legend,
+/*table,*/ caption/*, tbody, tfoot, thead, tr, th, td */{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	/*background: transparent;*/
+}
+body {
+	line-height: 1;
+}
+/*ol, ul {
+	list-style: none;
+}*/
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------- DATOS GENERALES ---------------------*/
+
+body{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#000;
+	line-height:18px;
+	background:#ffbe65;
+}
+
+#hor_full1, #hor_full2, #hor_full3{
+	float:left;
+	width:100%;
+}
+
+#interior{
+	width:1000px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#fnd_sup_menu{
+	width:100%;
+	background:url(../imagenes/barra_sup_menu.jpg);
+	background-repeat:repeat-x;
+	height:20px;
+	float:left;
+}
+
+#menu_sup{
+	width:1000px;
+	height:50px;
+	float:inherit;
+	padding:0 0 10px 0;	
+}
+
+#banner_logo{
+	width:1000px;
+	height:200px;
+	float:left;
+	padding:0 0 10px 0;
+}
+
+#contenido_total{
+	width:1000px;
+	float:left;
+}
+
+#fnd_sup_contenido{
+	width:1000px;
+	height:10px;
+	background:url(../imagenes/fnd_sup_principal.png);
+	float:left;
+}
+
+#fnd_med_contenido{
+	width:980px;
+	padding:0 10px 0 10px;
+	background:url(../imagenes/fnd_med_principal.png);
+	float:left;
+}
+
+#fnd_inf_contenido{
+	width:1000px;
+	height:10px;
+	background:url(../imagenes/fnd_inf_principal.png);
+	float:left;
+}
+
+#panel_izq{
+	width:310px;
+	float:left;
+}
+
+#busca_destino_izq{
+	width:304px;
+	height:245px;
+	background:url(../imagenes/panel_busca_destino.jpg);
+	float:left;
+}
+
+#espacio_izq{
+	width:200px;
+	height:15px;
+	float:left;
+}
+
+#promociones_izq{
+	width:295px;
+	height:247px;
+	background:url(../imagenes/panel_promociones.jpg);
+	float:left;
+	padding:10px 0 0 11px;
+}
+
+#contacto_izq{
+	width:306px;
+	float:left;
+}
+
+#fnd_footer{
+	widows:100%;
+	height:48px;
+	margin-top:15px;
+	background:url(../imagenes/fnd_footer.png);
+	background-repeat:repeat-x;
+}
+
+#panel_der{
+	width:650px;
+	padding:10px 10px 10px 10px;
+	float:left;
+}
+
+#panel_der a:hover, a:link, a:visited{
+	color:#000;
+	font-weight:bold;
+}
+
+#total_paquetes{
+	width:100%;
+	float:left;
+}
+
+#panel_paquetes{
+	width:203px;
+	height:205px;
+	background:url(../imagenes/fondo_paquetes.jpg);
+	float:left;
+	margin:6px;
+}
+
+#img_paquetes, #texto_paquetes, #dias_paquetes, #precio_paquetes, #more_info{
+	width:100%;
+	float:left;
+	text-align:center;
+}
+
+#img_paquetes{
+	padding:8px 0 8px 0;
+}
+
+#texto_paquetes{
+	padding:7px 0 0 0;
+	color:#d36b20;
+	font-size:12px;
+	font-weight:bold;
+}
+
+#dias_paquetes, #precio_paquetes{
+	padding:1px 0 1px 0;
+	text-transform:uppercase;
+}
+
+#tarjetas_operadores{
+	width:100%;
+	float:left;
+}
+
+#tarjetas{
+	width:205px;
+	float:left;
+	padding:10px 6px 0 6px;
+}
+
+#operadores{
+	width:425px;
+	float:left;
+	padding:10px 0 0 0;
+}
+
+#fnd_sup_content_paq{
+	width:630px;
+	height:10px;
+	background:url(../imagenes/fnd_sup_contenido.jpg);
+	background-repeat:no-repeat;
+	float:left;
+	margin:0 0 0 6px;
+}
+
+#fnd_med_content_paq{
+	width:630px;
+	background:url(../imagenes/fnd_med_contenido.jpg);
+	float:left;
+	margin:0 0 0 6px;
+}
+
+#fnd_inf_content_paq{
+	width:630px;
+	height:10px;
+	background:url(../imagenes/fnd_inf_contenido.jpg);
+	background-repeat:no-repeat;
+	float:left;
+	margin:0 0 10px 6px;
+}
+
+#cabecera_contenido_paq, #cuerpo_contenido_paq{
+	width:100%;
+	float:left;
+}
+
+#texto_contenido_paq{
+	width:50%;
+	float:left;
+	padding:10px;
+}
+
+#destino_contenido_paq{
+	width:300px;
+	float:left;
+	color:#d36b20;
+	font-size:16px;
+	font-weight:bold;
+	padding:5px 0 0 10px;
+}
+
+#dias_contenido_paq, #precio_contenido_paq{
+	width:300px;
+	float:left;
+	font-size:13px;
+	padding:5px 0 0 10px;
+}
+
+#img_contenido_paq{
+	width:200px;
+	float:right;
+	padding:0 30px 0 0;
+}
+
+#contenido_paq{
+	width:605px;
+	float:left;
+	padding:10px;
+}
+
+#text_paginacion{
+	text-align:center;
+	font-weight:bold;
+	color:#FFF;
+	width:100%;
+	float:left;
+	padding:6px 0 10px 0;
+}
+
+.titulo_nosotros{
+	font-size:16px;
+	font-weight:bold;
+	text-align:center;
+}
+
+.texto_derecha{
+	text-align:right;
+}
+
+.texto_contenido{
+	text-align:justify;
+}
+
+#menu_inf{
+	width:640px;
+	float:left;
+	color:#FFF;
+	padding:18px 0 0 0;
+  	text-align:center;
+}
+
+#copy{
+	width:250px;
+	float:left;
+	text-align:center;
+	padding:8px 0 0 100px;
+	color:#FFF;
+}
+
+#fnd_footer a:hover, a:link, a:visited{
+	color:#000;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#panel_busqueda{
+	width:100%;
+	float:left;
+	text-align:center;
+}
+
+#full_day{
+	width:630px;
+	background:url(../imagenes/fnd_med_contenido.jpg);
+	float:left;
+	margin:0 0 0 6px;
+	text-align:center;
+	font:Georgia, "Times New Roman";
+	font-size:28px;
+	color:#000;
+	font-style:italic;
+	padding:8px 0 8px 0;
+}
+
+#publicidad-210{
+	width:100%;
+	float:left;
+	padding:20px 0 20px 0; 
+	text-align:center;
+}

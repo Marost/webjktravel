@@ -1,0 +1,687 @@
+<?php
+include("panel@jktravel/conexion/conexion.php");
+header("Content-Type: text/html; charset=iso-8859-1");
+
+	$url="index.php";
+	$busqueda=$_REQUEST["busqueda"];
+
+	$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE id>0 and publicar=1 order by destino asc;", $conexion);
+	$num_registros=mysql_num_rows($rst_destinos);
+	
+	$registros=12;	
+	$pagina=$_GET["pag"];
+	if (is_numeric($pagina))
+	$inicio=(($pagina-1)*$registros);
+	else
+	$inicio=0;
+	
+	$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE id>0 and publicar='1' ORDER BY destino ASC LIMIT $inicio, $registros;", $conexion);
+	$paginas=ceil($num_registros/$registros);
+	
+	//-------------- BUSQUEDA SOLO DESTINO -------------------//
+	if ($_REQUEST["btnBuscar"]!="" || $_REQUEST["busqueda"]!="")
+	{
+		$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE destino LIKE '%$busqueda%'", $conexion);
+		$num_registros=mysql_num_rows($rst_destinos);
+		
+		$registros=12;	
+		$pagina=$_GET["pag"];
+		if (is_numeric($pagina))
+		$inicio=(($pagina-1)*$registros);
+		else
+		$inicio=0;
+		
+		$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE destino LIKE '%$busqueda%' ORDER BY destino ASC LIMIT $inicio, $registros;", $conexion);
+		$paginas=ceil($num_registros/$registros);
+		
+	} 
+	if ($num_registros==0)
+	{
+		if ($busqueda!="")		
+			$mensaje="<div id='fnd_sup_content_paq'></div>
+						<div id='fnd_med_content_paq'>
+							<div id='cuerpo_contenido_paq'>
+								<div id='contenido_paq'>
+									No se encontraron Paquetes Turisticos con el siguiente Destino: $busqueda
+								</div>
+							</div>
+						</div>
+					<div id='fnd_inf_content_paq'></div>";
+		else
+			$mensaje="<div id='fnd_sup_content_paq'></div>
+						<div id='fnd_med_content_paq'>
+							<div id='cuerpo_contenido_paq'>
+								<div id='contenido_paq'>
+									No hay destinos registrados en la base de datos
+								</div>
+							</div>
+						</div>
+					<div id='fnd_inf_content_paq'></div>";
+	} 
+	
+	//-------------- BUSQUEDA DESTINO ENTRE FECHAS -------------------//
+	$fsalida1=$_REQUEST["salida"];
+	$fsalida2=$_REQUEST["retorno"];
+	$fretorno=$_REQUEST["retorno"];
+
+	if ($_REQUEST["btnBuscarFechas"]!="")
+	{
+		$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE fecha_salida>='$fsalida1' AND fecha_salida<='$fsalida2' AND fecha_retorno<='$fretorno';", $conexion);
+		$num_registros=mysql_num_rows($rst_destinos);
+		
+		$registros=12;	
+		$pagina=$_GET["pag"];
+		if (is_numeric($pagina))
+		$inicio=(($pagina-1)*$registros);
+		else
+		$inicio=0;
+		
+		$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE fecha_salida>='$fsalida1' AND fecha_salida<='$fsalida2' AND fecha_retorno<='$fretorno' ORDER BY destino ASC LIMIT $inicio, $registros;", $conexion);
+		$paginas=ceil($num_registros/$registros);
+	}
+	if ($num_registros==0)
+	{
+		if (fsalida1!="")
+			$mensaje="<div id='fnd_sup_content_paq'></div>
+						<div id='fnd_med_content_paq'>
+							<div id='cuerpo_contenido_paq'>
+								<div id='contenido_paq'>
+									No se encontraron Paquetes Turisticos con el siguiente Destino: $destino
+								</div>
+							</div>
+						</div>
+					<div id='fnd_inf_content_paq'></div>";
+		else
+			$mensaje="<div id='fnd_sup_content_paq'></div>
+						<div id='fnd_med_content_paq'>
+							<div id='cuerpo_contenido_paq'>
+								<div id='contenido_paq'>
+									No hay destinos registrados en la base de datos
+								</div>
+							</div>
+						</div>
+					<div id='fnd_inf_content_paq'></div>";
+	} 
+	
+	//-------------- BUSQUEDA DESTINO ENTRE PRECIOS -------------------//
+	$precio1=$_REQUEST["precio1"];
+	$precio2=$_REQUEST["precio2"];
+	
+	if ($_REQUEST["btnBuscarPrecios"]!="")
+	{
+		$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE precio>=$precio1 AND precio<=$precio2 ORDER BY precio ASC;", $conexion);
+		$num_registros=mysql_num_rows($rst_destinos);
+		
+		$registros=12;	
+		$pagina=$_GET["pag"];
+		if (is_numeric($pagina))
+		$inicio=(($pagina-1)*$registros);
+		else
+		$inicio=0;
+		
+		$rst_destinos=mysql_query("SELECT * FROM jk_paquetes WHERE precio>=$precio1 AND precio<=$precio2 ORDER BY precio ASC LIMIT $inicio, $registros;", $conexion);
+		$paginas=ceil($num_registros/$registros);
+	}
+	if ($num_registros==0)
+	{
+		if ($precio1!="")
+			$mensaje="<div id='fnd_sup_content_paq'></div>
+						<div id='fnd_med_content_paq'>
+							<div id='cuerpo_contenido_paq'>
+								<div id='contenido_paq'>
+									No se encontraron Paquetes Turisticos con el siguiente Destino: $destino
+								</div>
+							</div>
+						</div>
+					<div id='fnd_inf_content_paq'></div>";
+		else
+			$mensaje="<div id='fnd_sup_content_paq'></div>
+						<div id='fnd_med_content_paq'>
+							<div id='cuerpo_contenido_paq'>
+								<div id='contenido_paq'>
+									No hay destinos registrados en la base de datos
+								</div>
+							</div>
+						</div>
+					<div id='fnd_inf_content_paq'></div>";
+	} 
+	
+	
+	
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="keywords" content="agente viajes, turismo, agencia viajes, agencia viajes lima, agencia turismo, agencia viajes peru, tours peru, tours lima, tours internacionales, tours internacional, tours nacionales, turismo peru, turismo perú, turismo, turismo lima, paquetes turísticos, paquetes turísticos internacionales, paquetes turisticos peru, paquetes turísticos incluido, ofertas viajes, ofertas viajes internacionales, ofertas viajes peru, ofertas viajes caribe, varadero, punta cana, cancun, riviera maya, buenos aires, salinas, san andres, santa martha, habana, cali, cartagena, bogota, orlando, republica dominicana, cuba, disney" />
+<meta http-equiv="description" content="J&K Travel es una agencia de viajes especializada en viajes turísticos dentro del Perú y por todo el mundo. Nuestra empresa se encuentra localizada geográficamente en Lima, Perú y desde aquí operamos nuestros viajes a los diferentes destinos solicitados para lograr su viaje anhelado." />
+<title>JK Travel - Agencia de Viajes y Turismo</title>
+<link href="css/estilo.css" rel="stylesheet" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS ::: JK Travel - Agencia de Viajes y Turismo :::" href="rss.php" />
+<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
+<script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+<link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="css/jquery.ui.all.css"/>
+<script src="js/jquery-1.4.2.js" type="text/javascript"></script>
+<script src="js/jquery.ui.core.js" type="text/javascript"></script>
+<script src="js/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="js/jquery.ui.datepicker.js" type="text/javascript"></script>
+<script src="SpryAssets/SpryAccordion.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function() {
+		var dates = $('#salida, #retorno').datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1,
+			onSelect: function(selectedDate) {
+				var option = this.id == "salida" ? "minDate" : "maxDate";
+				var instance = $(this).data("datepicker");
+				var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+				dates.not(this).datepicker("option", option, date);
+			}
+		});
+	});
+</script>
+    
+<link href="SpryAssets/SpryAccordion.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="imagetoolbar" content="no">
+
+<script language="Javascript">
+	document.oncontextmenu = function(){return false}
+<!-- Begin
+function disableselect(e){
+	return false
+}
+function reEnable(){
+	return true
+}
+	document.onselectstart=new Function ("return false")
+if (window.sidebar){
+	document.onmousedown=disableselect
+	document.onclick=reEnable
+}
+// End -->
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20229980-12']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20229980-12']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</head>
+
+<body>
+<div id="principal">
+	<div id="hor_full1"><div id="fnd_sup_menu"></div></div><!--FIN HORIZONTAL FULL1-->
+    <div id="hor_full2">
+      <div id="interior">
+        <div id="menu_sup">
+        <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="1000" height="50">
+          <param name="movie" value="flash/menu.swf" />
+          <param name="quality" value="high" />
+          <param name="wmode" value="transparent" />
+          <param name="swfversion" value="8" />
+          <!-- Esta etiqueta param indica a los usuarios de Flash Player 6.0 r65 o posterior que descarguen la versión más reciente de Flash Player. Elimínela si no desea que los usuarios vean el mensaje. -->
+          <param name="expressinstall" value="Scripts/expressInstall.swf" />
+          <!-- La siguiente etiqueta object es para navegadores distintos de IE. Ocúltela a IE mediante IECC. -->
+          <!--[if !IE]>-->
+          <object type="application/x-shockwave-flash" data="flash/menu.swf" width="1000" height="50">
+            <!--<![endif]-->
+            <param name="quality" value="high" />
+            <param name="wmode" value="transparent" />
+            <param name="swfversion" value="8" />
+            <param name="expressinstall" value="Scripts/expressInstall.swf" />
+            <!-- El navegador muestra el siguiente contenido alternativo para usuarios con Flash Player 6.0 o versiones anteriores. -->
+            <div>
+              <img src="imagenes/fnd_menu_superior.png" alt="" width="901" height="50" border="0" usemap="#Map2" />
+          <map name="Map2" id="Map2">
+            <area shape="rect" coords="34,13,114,37" href="index.php" alt="INICIO" />
+            <area shape="rect" coords="184,14,264,39" href="nosotros.php" alt="NOSOTROS" />
+            <area shape="rect" coords="323,8,428,44" href="paq_nacionales.php" alt="PAQUETES NACIONALES" />
+            <area shape="rect" coords="463,7,588,43" href="paq_internacionales.php" alt="PAQUETES INTERNACIONALES" />
+            <area shape="rect" coords="630,6,721,43" href="visas_embajadas.php" alt="VISAS Y EMBAJADAS" />
+            <area shape="rect" coords="774,13,878,38" href="contacto.php" alt="CONTACTENOS" />
+          </map>
+            </div>
+            <!--[if !IE]>-->
+          </object>
+          <!--<![endif]-->
+        </object>
+
+        </div>
+        <!--FIN MENU SUPERIOR-->
+    <div id="banner_logo">
+      <object id="FlashID3" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="1000" height="200">
+        <param name="movie" value="flash/banner_superior.swf" />
+        <param name="quality" value="high" />
+        <param name="wmode" value="transparent" />
+        <param name="swfversion" value="8" />
+        <!-- Esta etiqueta param indica a los usuarios de Flash Player 6.0 r65 o posterior que descarguen la versión más reciente de Flash Player. Elimínela si no desea que los usuarios vean el mensaje. -->
+        <param name="expressinstall" value="Scripts/expressInstall.swf" />
+        <!-- La siguiente etiqueta object es para navegadores distintos de IE. Ocúltela a IE mediante IECC. -->
+        <!--[if !IE]>-->
+        <object type="application/x-shockwave-flash" data="flash/banner_superior.swf" width="1000" height="200">
+          <!--<![endif]-->
+          <param name="quality" value="high" />
+          <param name="wmode" value="transparent" />
+          <param name="swfversion" value="8" />
+          <param name="expressinstall" value="Scripts/expressInstall.swf" />
+          <!-- El navegador muestra el siguiente contenido alternativo para usuarios con Flash Player 6.0 o versiones anteriores. -->
+          <div>
+            <h4>El contenido de esta página requiere una versión más reciente de Adobe Flash Player.</h4>
+            <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" width="112" height="33" /></a></p>
+          </div>
+          <!--[if !IE]>-->
+        </object>
+        <!--<![endif]-->
+      </object>
+    </div><!--FIN BANENR LOGO-->
+          <div id="contenido_total">
+                <div id="fnd_sup_contenido"></div>
+                <div id="fnd_med_contenido">
+                	<div id="panel_izq">
+                    	<div id="panel_busqueda">
+                    	  <p><img src="imagenes/buscar.jpg" width="300" height="20" /></p>
+                    	  <form id="form1" name="form1" method="get" action="index.php?busqueda=dato.value">
+                    	    <span id="sprytextfield1">
+                    	    <label>
+                    	      <input name="busqueda" type="text" id="busqueda" value="<?php echo $_GET["busqueda"];?>" size="30" />
+                    	      <br />
+                            </label>
+                    	    <span class="textfieldRequiredMsg">Ingrese destino</span></span>
+                    	    <label><br />
+                    	      <input type="submit" name="btnBuscar" id="btnBuscar" value="Buscar" />
+                  	      </label>
+                    	  </form>
+                    	</div>
+                         <div id="espacio_izq"></div>
+            <div id="busca_destino_izq">
+              <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr>                  </tr>
+                <tr>                  </tr>
+              </table>
+      <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td><div id="Accordion1" class="Accordion" tabindex="0">
+                      <div class="AccordionPanel">
+                        <div class="AccordionPanelTab">Busqueda por Fechas</div>
+                        <div class="AccordionPanelContent">
+                       <form id="form3" name="form3" method="get" action="">
+                          <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td width="40%">&nbsp;</td>
+                              <td width="60%">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td height="40" align="right"><strong>Salida:</strong></td>
+                              <td height="40"><span id="sprytextfield2">
+                                <input name="salida" type="text" id="salida" value="<?php echo $_GET["salida"];?>" />
+                                <br />
+                                <span class="textfieldRequiredMsg">Ingrese Fecha</span></span></td>
+</tr>
+                            <tr>
+                              <td height="40" align="right"><strong>Retorno:</strong></td>
+                              <td height="40"><span id="sprytextfield3">
+                                <label>
+                                  <input name="retorno" type="text" id="retorno" value="<?php echo $_GET["retorno"];?>" />
+                                  </label>
+                                <br />
+                                <span class="textfieldRequiredMsg">Ingrese Fecha</span></span></td>
+</tr>
+                            <tr>
+                              <td colspan="2" align="center">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" align="center"><input type="submit" name="btnBuscarFechas" id="btnBuscarFechas" value="Buscar" /></td>
+                            </tr>
+                            <tr> </tr>
+                            <tr> </tr>
+                          </table>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="AccordionPanel">
+                        <div class="AccordionPanelTab">Busqueda por Precio ($)</div>
+                        <div class="AccordionPanelContent">
+                          <form id="form4" name="form4" method="get" action="">
+                            <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td width="40%">&nbsp;</td>
+                                <td width="60%">&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td height="40" align="right"><strong>Desde:</strong></td>
+                                <td height="40"><span id="sprytextfield4">
+                                  <input name="precio1" type="text" id="precio1" value="<?php echo $_GET["precio1"];?>" />
+                                  <br />
+                                  <span class="textfieldRequiredMsg">Ingrese Precio</span></span></td>
+</tr>
+                              <tr>
+                                <td height="40" align="right"><strong>A:</strong></td>
+                                <td height="40"><span id="sprytextfield5">
+                                  <label>
+                                    <input name="precio2" type="text" id="precio2" value="<?php echo $_GET["precio2"];?>" />
+                                  </label>
+                                  <br />
+                                  <span class="textfieldRequiredMsg">Ingrese Precio</span></span></td>
+</tr>
+                              <tr>
+                                <td colspan="2" align="center">&nbsp;</td>
+                              </tr>
+                              <tr>
+                                <td colspan="2" align="center"><input type="submit" name="btnBuscarPrecios" id="btnBuscarPrecios" value="Buscar" /></td>
+                              </tr>
+                              <tr> </tr>
+                              <tr> </tr>
+                              <tr> </tr>
+                              <tr> </tr>
+                            </table>
+                          </form>
+                        </div>
+                      </div>
+                    </div></td>
+          </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                  </tr>
+              </table>
+                <p>&nbsp;</p>
+          </div><!--FIN PANEL BUSCA DESTINO-->
+                        <div id="espacio_izq"></div><!--FIN ESPACIO IZQUIERDA-->
+                        <div id="promociones_izq">
+                          <object id="FlashID2" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="280" height="235">
+                            <param name="movie" value="flash/banner-venta.swf" />
+                            <param name="quality" value="high" />
+                            <param name="wmode" value="opaque" />
+                            <param name="swfversion" value="8" />
+                            <!-- Esta etiqueta param indica a los usuarios de Flash Player 6.0 r65 o posterior que descarguen la versión más reciente de Flash Player. Elimínela si no desea que los usuarios vean el mensaje. -->
+                            <param name="expressinstall" value="Scripts/expressInstall.swf" />
+                            <!-- La siguiente etiqueta object es para navegadores distintos de IE. Ocúltela a IE mediante IECC. -->
+                            <!--[if !IE]>-->
+                            <object type="application/x-shockwave-flash" data="flash/banner-venta.swf" width="280" height="235">
+                              <!--<![endif]-->
+                              <param name="quality" value="high" />
+                              <param name="wmode" value="opaque" />
+                              <param name="swfversion" value="8" />
+                              <param name="expressinstall" value="Scripts/expressInstall.swf" />
+                              <!-- El navegador muestra el siguiente contenido alternativo para usuarios con Flash Player 6.0 o versiones anteriores. -->
+                              <div>
+                                <h4>El contenido de esta página requiere una versión más reciente de Adobe Flash Player.</h4>
+                                <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" width="112" height="33" /></a></p>
+                              </div>
+                              <!--[if !IE]>-->
+                            </object>
+                            <!--<![endif]-->
+                          </object>
+                        </div><!--FIN PANEL BUSCA DESTINO-->
+                    <div id="espacio_izq"></div><!--FIN ESPACIO IZQUIERDA-->
+                        <div id="contacto_izq">
+                  <img src="imagenes/contacto_izq.jpg" width="303" height="168" border="0" /></div><!--FIN contacto_izq--></div><!--FIN PANEL IZQUIERDA-->
+                    <div id="panel_der">
+                    	<div id="total_paquetes">
+						<?php while ($fila=mysql_fetch_array($rst_destinos)){ ?>                        
+                            <div id="panel_paquetes">
+                                <div id="img_paquetes"><img src="imagenes/img-upload/<?php echo $fila["imagen"]; ?>" /></div>
+                                <div id="texto_paquetes"><?php echo $fila["destino"]; ?></div>
+                                <div id="dias_paquetes"><?php echo $fila["paquete"]; ?></div>
+                                <div id="precio_paquetes"><?php 
+											if ($fila["precio"]>0)
+											{
+												echo "Desde $ ". $fila["precio"] . ".00";
+											}
+										?></div>
+                                <div id="more_info"><a href="paquetes.php?id=<?php echo $fila["id"]; ?>">[+] mas info</a></div>
+                            </div><!--FIN PANEL PAQUETES-->
+						<?php } ?>
+                        
+                        <?php  echo $mensaje; ?>
+                        </div><!--FIN TOTAL PAQUETES-->
+                        <div id="text_paginacion">
+<?php 
+
+if ($_REQUEST["btnBuscar"]=="" && $_REQUEST["btnBuscarFechas"]=="" && $_REQUEST["btnBuscarPrecios"]=="")
+{
+	if (!isset($_GET["pag"]))
+	$pag = 1;
+	else
+	$pag = $_GET["pag"];
+
+	function paginar1($actual, $total, $por_pagina, $enlace, $maxpags=0)
+	{
+		$total_paginas = ceil($total/$por_pagina);
+		$anterior = $actual - 1;
+		$posterior = $actual + 1;
+		$minimo = $maxpags ? max(1, $actual-ceil($maxpags/2)): 1;
+		$maximo = $maxpags ? min($total_paginas, $actual+floor($maxpags/2)): $total_paginas;
+		if ($actual>1)
+		$texto = "<a href=\"$enlace$anterior\">Anterior</a> ";
+		else
+		$texto = "<b>&lt;&lt;</b> ";
+		if ($minimo!=1) $texto.= "... ";
+		for ($i=$minimo; $i<$actual; $i++)
+		$texto .= "<a href=\"$enlace$i\">$i</a> ";
+		$texto .= "<b>$actual</b> ";
+		for ($i=$actual+1; $i<=$maximo; $i++)
+		$texto .= "<a href=\"$enlace$i\">$i</a> ";
+		if ($maximo!=$total_paginas) $texto.= "... ";
+		if ($actual<$total_paginas)
+		$texto .= "<a href=\"$enlace$posterior\">Siguiente</a>";
+		else
+		$texto .= "<b>&gt;&gt;</b>";
+		return $texto;
+	}
+
+	echo paginar1($pag, $num_registros, $registros, "$url?pag=", 10);
+}
+?>
+
+<?php
+/*----------- PAGINACION CON SOLO DESTINO ------------------*/
+if ($_REQUEST["btnBuscar"]!="")
+{
+	if (!isset($_GET["pag"]))
+	$pag = 1;
+	else
+	$pag = $_GET["pag"];
+	
+	function paginar2($actual, $total, $por_pagina, $enlace, $maxpags=0)
+	{
+	$btn="Buscar";
+	$busq=$_REQUEST["busqueda"];
+	$total_paginas = ceil($total/$por_pagina);
+	$anterior = $actual - 1;
+	$posterior = $actual + 1;
+	$minimo = $maxpags ? max(1, $actual-ceil($maxpags/2)): 1;
+	$maximo = $maxpags ? min($total_paginas, $actual+floor($maxpags/2)): $total_paginas;
+	if ($actual>1)
+	$texto = "<a href=\"$enlace$anterior&busqueda=$busq&btnBuscar=$btn\">Anterior</a> ";
+	else
+	$texto = "<b>&lt;&lt;</b> ";
+	if ($minimo!=1) $texto.= "... ";
+	for ($i=$minimo; $i<$actual; $i++)
+	$texto .= "<a href=\"$enlace$i&busqueda=$busq&btnBuscar=$btn\">$i</a> ";
+	$texto .= "<b>$actual</b> ";
+	for ($i=$actual+1; $i<=$maximo; $i++)
+	$texto .= "<a href=\"$enlace$i&busqueda=$busq&btnBuscar=$btn\">$i</a> ";
+	if ($maximo!=$total_paginas) $texto.= "... ";
+	if ($actual<$total_paginas)
+	$texto .= "<a href=\"$enlace$posterior&busqueda=$busq&btnBuscar=$btn\">Siguiente</a>";
+	else
+	$texto .= "<b>&gt;&gt;</b>";
+	return $texto;
+	}
+	
+	echo paginar2($pag, $num_registros, $registros, "$url?pag=", 10);
+}
+?>
+
+<?php
+/*----------- PAGINACION ENTRE FECHAS ------------------*/
+if ($_REQUEST["btnBuscarFechas"]!="")
+{
+	if (!isset($_GET["pag"]))
+	$pag = 1;
+	else
+	$pag = $_GET["pag"];
+	
+	function paginar3($actual, $total, $por_pagina, $enlace, $maxpags=0)
+	{
+	$btn="Buscar";
+	$fsalida1=$_REQUEST["salida"];
+	$fsalida2=$_REQUEST["retorno"];
+	$fretorno=$_REQUEST["retorno"];
+	
+	$total_paginas = ceil($total/$por_pagina);
+	$anterior = $actual - 1;
+	$posterior = $actual + 1;
+	$minimo = $maxpags ? max(1, $actual-ceil($maxpags/2)): 1;
+	$maximo = $maxpags ? min($total_paginas, $actual+floor($maxpags/2)): $total_paginas;
+	if ($actual>1)
+	$texto = "<a href=\"$enlace$anterior&salida=$fsalida1&retorno=$fsalida2&retorno=$fretorno&btnBuscarFechas=$btn\">Anterior</a> ";
+	else
+	$texto = "<b>&lt;&lt;</b> ";
+	if ($minimo!=1) $texto.= "... ";
+	for ($i=$minimo; $i<$actual; $i++)
+	$texto .= "<a href=\"$enlace$i&salida=$fsalida1&retorno=$fsalida2&retorno=$fretorno&btnBuscarFechas=$btn\">$i</a> ";
+	$texto .= "<b>$actual</b> ";
+	for ($i=$actual+1; $i<=$maximo; $i++)
+	$texto .= "<a href=\"$enlace$i&salida=$fsalida1&retorno=$fsalida2&retorno=$fretorno&btnBuscarFechas=$btn\">$i</a> ";
+	if ($maximo!=$total_paginas) $texto.= "... ";
+	if ($actual<$total_paginas)
+	$texto .= "<a href=\"$enlace$posterior&salida=$fsalida1&retorno=$fsalida2&retorno=$fretorno&btnBuscarFechas=$btn\">Siguiente</a>";
+	else
+	$texto .= "<b>&gt;&gt;</b>";
+	return $texto;
+	}
+	
+	echo paginar3($pag, $num_registros, $registros, "$url?pag=", 10);
+}
+?>
+
+<?php
+/*----------- PAGINACION ENTRE PRECIOS ------------------*/
+if ($_REQUEST["btnBuscarPrecios"]!="")
+{
+	if (!isset($_GET["pag"]))
+	$pag = 1;
+	else
+	$pag = $_GET["pag"];
+	
+	function paginar4($actual, $total, $por_pagina, $enlace, $maxpags=0)
+	{
+	$btn="Buscar";
+	$precio1=$_REQUEST["precio1"];
+	$precio2=$_REQUEST["precio2"];
+	
+	$total_paginas = ceil($total/$por_pagina);
+	$anterior = $actual - 1;
+	$posterior = $actual + 1;
+	$minimo = $maxpags ? max(1, $actual-ceil($maxpags/2)): 1;
+	$maximo = $maxpags ? min($total_paginas, $actual+floor($maxpags/2)): $total_paginas;
+	if ($actual>1)
+	$texto = "<a href=\"$enlace$anterior&precio1=$precio1&precio2=$precio2&btnBuscarPrecios=$btn\">Anterior</a> ";
+	else
+	$texto = "<b>&lt;&lt;</b> ";
+	if ($minimo!=1) $texto.= "... ";
+	for ($i=$minimo; $i<$actual; $i++)
+	$texto .= "<a href=\"$enlace$i&precio1=$precio1&precio2=$precio2&btnBuscarPrecios=$btn\">$i</a> ";
+	$texto .= "<b>$actual</b> ";
+	for ($i=$actual+1; $i<=$maximo; $i++)
+	$texto .= "<a href=\"$enlace$i&precio1=$precio1&precio2=$precio2&btnBuscarPrecios=$btn\">$i</a> ";
+	if ($maximo!=$total_paginas) $texto.= "... ";
+	if ($actual<$total_paginas)
+	$texto .= "<a href=\"$enlace$posterior&precio1=$precio1&precio2=$precio2&btnBuscarPrecios=$btn\">Siguiente</a>";
+	else
+	$texto .= "<b>&gt;&gt;</b>";
+	return $texto;
+	}
+	
+	echo paginar4($pag, $num_registros, $registros, "$url?pag=", 10);
+}
+?>
+                        </div>
+                        <div id="content_boletines">
+                            <div id="fnd_sup_content_paq"></div>
+                                <div id="fnd_med_content_paq">
+                                    <div id="cuerpo_contenido_paq">
+                                    	<div id="contenido_paq">
+                                    	  <form id="form2" name="form2" method="post" action="panel@jktravel/conexion/boletin.php">
+                                    	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                  	          <tr>
+                                  	            <td width="33%"><img src="imagenes/img_boletin.jpg" alt="BOLETIN" width="200" height="38" /></td>
+                                  	            <td width="27%"><label>
+                                  	              <strong>Nombre y Apellidos:</strong><br />
+                                  	              <input type="text" name="nombre" id="nombre" />
+                               	                </label></td>
+                                  	            <td width="27%"><label>
+                                  	              <strong>Email:</strong><br />
+                                  	              <input type="text" name="email" id="email" />
+                               	                </label></td>
+                                  	            <td width="13%" align="center"><label>
+                                  	              <input type="submit" name="button" id="button" value="Enviar" />
+                               	                </label></td>
+                               	              </tr>
+                               	            </table>
+                                    	  </form>
+                                    	</div>
+                                    </div>
+                                </div>
+                            <div id="fnd_inf_content_paq"></div>
+                        </div>
+                        <div id="tarjetas_operadores">
+                        	<div id="tarjetas"><img src="imagenes/img_tarjetas.jpg" width="203" height="59" alt="TARJETAS" /></div>
+                            <div id="operadores"><img src="imagenes/img_operadores.jpg" width="425" height="59" alt="OPERADORES" /></div>
+                        </div>
+                    </div><!--FIN PANEL DERECHA-->
+                </div>
+                <div id="fnd_inf_contenido"></div>
+            </div><!--FIN CONTENIDO TOTAL-->
+      </div><!--FIN INTERIOR-->
+    </div><!--FIN HOT FULL2-->
+    <?php
+		include("footer.php");
+	?>
+</div><!--FIN PRINCIPAL-->
+<script type="text/javascript">
+<!--
+swfobject.registerObject("FlashID");
+swfobject.registerObject("FlashID2");
+swfobject.registerObject("FlashID3");
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
+var Accordion1 = new Spry.Widget.Accordion("Accordion1");
+var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3");
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2");
+var sprytextfield5 = new Spry.Widget.ValidationTextField("sprytextfield5");
+var sprytextfield4 = new Spry.Widget.ValidationTextField("sprytextfield4");
+//-->
+</script>
+</body>
+</html>
